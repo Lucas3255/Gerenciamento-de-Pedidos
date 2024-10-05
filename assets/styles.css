@@ -1,0 +1,48 @@
+body {
+    background: rgb(17, 17, 17);
+}
+
+header {
+    padding: 50px;
+    background-color: rgb(231, 231, 15);
+}
+
+section {
+    background-color: rgb(17, 17, 17);
+    padding: 50px;
+    margin: 10px;
+    text-align: justify;
+}
+
+footer {
+    background-color: rgb(231, 231, 15);
+    text-align: center;
+    padding: 10px;
+}
+
+h1 {
+    text-align: center;
+    margin: 50px;
+}
+
+h2 {
+    font-size: 35px;
+    color: white;
+    text-align: center;
+}
+
+.fontePrincipal {
+    font-size: 20px;
+    color: white;
+}
+
+.fonteTitulo {
+    font-size: 30px;
+    color: white;
+}
+
+ul {
+    text-align: justify;
+    font-size: 20px;
+    color: blue;
+}
