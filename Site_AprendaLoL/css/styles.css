@@ -1,0 +1,51 @@
+body {
+    background: rgb(44, 43, 43);
+    font-size: 20px;
+    color: white;
+}
+
+main {   /* */
+    background-color: rgb(61, 61, 61);
+    padding: 50px;
+    margin: 10px;
+    text-align: center;
+}
+
+footer {
+    background-color: rgb(185, 185, 39);
+    text-align: center;
+    padding: 10px;
+    font-size: 20px;
+    color: rgb(0, 0, 0);
+}
+
+h1 {
+    font-size: 60px;
+    text-align: center;
+    margin: 80px;
+    color: rgb(255, 255, 255);
+    border: 5px solid rgb(255, 255, 255);
+    display: inline-block;
+}
+
+h2 {
+    font-size: 35px;
+    color: white;
+    text-align: center;
+}
+
+.imagemHome {
+    width: 1100px;
+    height: auto;
+}
+
+nav {
+    text-align: justify;
+}
+
+.banner {
+    padding: 30px;
+    background-image: url("../imagens/banner.jpg");
+    background-repeat: no-repeat;
+    background-position: center;
+}
