@@ -13,7 +13,7 @@ document.getElementById('form-funcionario').addEventListener('submit', function(
         const funcionario = { nome: nomeFunc, cpf: cpfFunc };
         funcionarios.push(funcionario);
         atualizarListaFuncionarios();
-    } else {
+    } else{
         alert('Por favor, preencha o nome e um CPF válido de 11 dígitos.');
     }
 
