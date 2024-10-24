@@ -1,64 +1,104 @@
-// Lista de funcionários e pedidos
+// Arrays para armazenar funcionários e pedidos
 let funcionarios = [];
 let pedidos = [];
 
-// Função para cadastrar funcionário
-document.getElementById('form-funcionario').addEventListener('submit', function(event) {
-    event.preventDefault();
+// Função para adicionar um funcionário
+document.getElementById('form-funcionario').addEventListener('submit', function (e) {
+    e.preventDefault();
     
-    const nomeFunc = document.getElementById('nome-func').value;
-    const cpfFunc = document.getElementById('cpf-func').value;
+    const nome = document.getElementById('nome-funcionario').value;
+    const cpf = document.getElementById('cpf-funcionario').value;
 
-    if (nomeFunc && cpfFunc.length === 11) {
-        const funcionario = { nome: nomeFunc, cpf: cpfFunc };
-        funcionarios.push(funcionario);
-        atualizarListaFuncionarios();
-    } else{
-        alert('Por favor, preencha o nome e um CPF válido de 11 dígitos.');
+    if (cpf.length === 11) { // Validação de CPF
+        funcionarios.push({ nome, cpf });
+        atualizarFuncionarios();
+    } else {
+        alert('CPF deve ter 11 dígitos');
     }
 
-    document.getElementById('form-funcionario').reset();
+    e.target.reset();
 });
 
-// Função para cadastrar pedido
-document.getElementById('form-pedido').addEventListener('submit', function(event) {
-    event.preventDefault();
+// Função para atualizar a lista de funcionários no formulário de pedidos
+function atualizarFuncionarios() {
+    const select = document.getElementById('responsavel-pedido');
+    select.innerHTML = '';
+    funcionarios.forEach((func) => {
+        const option = document.createElement('option');
+        option.value = func.nome;
+        option.textContent = func.nome;
+        select.appendChild(option);
+    });
+}
+
+// Função para adicionar um pedido
+document.getElementById('form-pedido').addEventListener('submit', function (e) {
+    e.preventDefault();
 
     const nomePedido = document.getElementById('nome-pedido').value;
-    const descPedido = document.getElementById('desc-pedido').value;
-    const respPedido = document.getElementById('resp-pedido').value;
-    const statusPedido = document.getElementById('status-pedido').value;
+    const descricao = document.getElementById('descricao-pedido').value;
+    const responsavel = document.getElementById('responsavel-pedido').value;
+    const status = document.getElementById('status-pedido').value;
 
-    if (nomePedido && respPedido) {
-        const pedido = { nome: nomePedido, descricao: descPedido, responsavel: respPedido, status: statusPedido };
-        pedidos.push(pedido);
-        atualizarListaPedidos();
-    } else {
-        alert('Por favor, preencha o nome do pedido e selecione um responsável.');
-    }
+    pedidos.push({ nomePedido, descricao, responsavel, status });
+    atualizarPedidos();
 
-    document.getElementById('form-pedido').reset();
+    e.target.reset();
 });
 
-// Atualizar lista de funcionários
-function atualizarListaFuncionarios() {
-    const lista = document.getElementById('lista-funcionarios');
-    lista.innerHTML = '';
-    const selectResp = document.getElementById('resp-pedido');
-    selectResp.innerHTML = '<option value="">Selecione um funcionário</option>';
-
-    funcionarios.forEach((func, index) => {
-        lista.innerHTML += `<li>${func.nome} - CPF: ${func.cpf}</li>`;
-        selectResp.innerHTML += `<option value="${func.nome}">${func.nome}</option>`;
-    });
-}
-
-// Atualizar lista de pedidos
-function atualizarListaPedidos() {
-    const lista = document.getElementById('lista-pedidos');
-    lista.innerHTML = '';
-
+// Função para atualizar a lista de pedidos
+function atualizarPedidos() {
+    const listaPedidos = document.getElementById('pedidos-list');
+    listaPedidos.innerHTML = '';
+    
     pedidos.forEach((pedido, index) => {
-        lista.innerHTML += `<li>${pedido.nome} (Responsável: ${pedido.responsavel}) - Status: ${pedido.status}</li>`;
+        const li = document.createElement('li');
+        li.innerHTML = `
+            <span>${pedido.nomePedido} - ${pedido.responsavel} - ${pedido.status}</span>
+            <select data-index="${index}" class="status-change">
+                <option value="A Fazer">A Fazer</option>
+                <option value="Fazendo">Fazendo</option>
+                <option value="Pronto para entrega">Pronto para entrega</option>
+            </select>
+        `;
+        listaPedidos.appendChild(li);
+    });
+
+    document.querySelectorAll('.status-change').forEach(select => {
+        select.addEventListener('change', function () {
+            const index = this.getAttribute('data-index');
+            pedidos[index].status = this.value;
+            atualizarPedidos();
+        });
     });
 }
+
+// Função para filtrar pedidos por status
+document.getElementById('filtro-status').addEventListener('change', function () {
+    const filtro = this.value;
+    const listaPedidos = document.getElementById('pedidos-list');
+    listaPedidos.innerHTML = '';
+
+    pedidos
+        .filter(pedido => filtro === 'Todos' || pedido.status === filtro)
+        .forEach((pedido, index) => {
+            const li = document.createElement('li');
+            li.innerHTML = `
+                <span>${pedido.nomePedido} - ${pedido.responsavel} - ${pedido.status}</span>
+                <select data-index="${index}" class="status-change">
+                    <option value="A Fazer">A Fazer</option>
+                    <option value="Fazendo">Fazendo</option>
+                    <option value="Pronto para entrega">Pronto para entrega</option>
+                </select>
+            `;
+            listaPedidos.appendChild(li);
+        });
+
+    document.querySelectorAll('.status-change').forEach(select => {
+        select.addEventListener('change', function () {
+            const index = this.getAttribute('data-index');
+            pedidos[index].status = this.value;
+            atualizarPedidos();
+        });
+    });
+});
